@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDMUSIC - Painel de Segurança</title>
+    <style>
+        :root {
+            --cor-principal: #FF0055; /* Vermelho Neon */
+            --cor-fundo: #080814; /* Quase Preto */
+            --cor-texto: #E0E0FF; /* Branco Gelo */
+            --cor-acento: #00FFFF; /* Ciano Neon */
+            --cor-sucesso: #39FF14; /* Verde Neon */
+            --cor-alerta: #FFEA00; /* Amarelo Neon */
+            --cor-erro: #FF073A; /* Vermelho mais forte */
+            --fonte-futurista: 'Orbitron', sans-serif;
+            --transicao-rapida: all 0.2s ease-in-out;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            font-family: var(--fonte-futurista);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            background: rgba(10, 10, 20, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 60px rgba(255, 0, 85, 0.3), 0 0 20px var(--cor-acento);
+            border: 2px solid var(--cor-principal);
+            max-width: 1200px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        h1 {
+            color: var(--cor-principal);
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px var(--cor-principal), 0 0 5px var(--cor-fundo);
+            letter-spacing: 5px;
+            font-weight: 700;
+            animation: neon-pulse-h1 2s infinite alternate;
+        }
+
+        @keyframes neon-pulse-h1 {
+            from { text-shadow: 0 0 15px var(--cor-principal), 0 0 25px var(--cor-principal); }
+            to { text-shadow: 0 0 12px var(--cor-principal), 0 0 20px var(--cor-principal), 0 0 35px rgba(255, 0, 85, 0.9); }
+        }
+
+        h2 {
+            color: var(--cor-acento);
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 8px var(--cor-acento);
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--cor-acento);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            text-align: left;
+        }
+
+        .section h3 {
+            color: var(--cor-acento);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--cor-principal);
+            padding-bottom: 10px;
+            text-shadow: 0 0 5px var(--cor-acento);
+            letter-spacing: 1px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .status-item {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: var(--transicao-rapida);
+        }
+
+        .status-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--cor-acento), 0 0 10px var(--cor-principal);
+        }
+
+        .status-item .label {
+            font-size: 0.9em;
+            color: var(--cor-texto);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .status-item .value {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--cor-sucesso);
+            text-shadow: 0 0 8px var(--cor-sucesso);
+        }
+
+        .status-item.alert .value {
+            color: var(--cor-alerta);
+            text-shadow: 0 0 8px var(--cor-alerta);
+        }
+
+        .status-item.error .value {
+            color: var(--cor-erro);
+            text-shadow: 0 0 8px var(--cor-erro);
+        }
+
+        .log-console {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--cor-principal);
+            border-radius: 8px;
+            padding: 15px;
+            height: 250px;
+            overflow-y: scroll;
+            margin-top: 15px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: var(--cor-sucesso);
+            box-shadow: inset 0 0 10px rgba(255, 0, 85, 0.3);
+            text-align: left;
+        }
+
+        .log-console::-webkit-scrollbar {
+            width: 8px;
+        }
+        .log-console::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .log-console::-webkit-scrollbar-thumb {
+            background: var(--cor-acento);
+            border-radius: 10px;
+            border: 1px solid var(--cor-fundo);
+        }
+        .log-console::-webkit-scrollbar-thumb:hover {
+            background: var(--cor-principal);
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            white-space: nowrap;
+        }
+        .log-entry.info { color: var(--cor-sucesso); }
+        .log-entry.warn { color: var(--cor-alerta); }
+        .log-entry.error { color: var(--cor-erro); }
+        .log-entry.critical { color: var(--cor-principal); font-weight: bold; }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, var(--cor-principal), var(--cor-acento));
+            color: var(--cor-fundo);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-family: var(--fonte-futurista);
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+            transition: var(--transicao-rapida);
+            text-transform: uppercase;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px var(--cor-acento), 0 0 15px var(--cor-principal);
+            background: linear-gradient(45deg, var(--cor-acento), var(--cor-principal));
+        }
+
+        .action-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 0 10px var(--cor-acento);
+        }
+
+        /* Indicador de status geral */
+        .system-status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: var(--cor-sucesso);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 5px var(--cor-sucesso);
+        }
+
+        .system-status.alert {
+            color: var(--cor-alerta);
+            text-shadow: 0 0 5px var(--cor-alerta);
+        }
+
+        .system-status.error {
+            color: var(--cor-erro);
+            text-shadow: 0 0 5px var(--cor-erro);
+        }
+
+        .status-indicator-light {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--cor-sucesso);
+            box-shadow: 0 0 10px var(--cor-sucesso), 0 0 20px var(--cor-sucesso);
+            margin-right: 10px;
+            animation: pulse-green 1.5s infinite alternate;
+        }
+
+        .system-status.alert .status-indicator-light {
+            background-color: var(--cor-alerta);
+            box-shadow: 0 0 10px var(--cor-alerta), 0 0 20px var(--cor-alerta);
+            animation: pulse-yellow 1.5s infinite alternate;
+        }
+
+        .system-status.error .status-indicator-light {
+            background-color: var(--cor-erro);
+            box-shadow: 0 0 10px var(--cor-erro), 0 0 20px var(--cor-erro);
+            animation: pulse-red 1s infinite alternate;
+        }
+
+        @keyframes pulse-green {
+            from { opacity: 0.6; box-shadow: 0 0 8px var(--cor-sucesso), 0 0 16px var(--cor-sucesso); }
+            to { opacity: 1; box-shadow: 0 0 12px var(--cor-sucesso), 0 0 24px var(--cor-sucesso); }
+        }
+        @keyframes pulse-yellow {
+            from { opacity: 0.6; box-shadow: 0 0 8px var(--cor-alerta), 0 0 16px var(--cor-alerta); }
+            to { opacity: 1; box-shadow: 0 0 12px var(--cor-alerta), 0 0 24px var(--cor-alerta); }
+        }
+        @keyframes pulse-red {
+            from { opacity: 0.6; box-shadow: 0 0 8px var(--cor-erro), 0 0 16px var(--cor-erro); }
+            to { opacity: 1; box-shadow: 0 0 12px var(--cor-erro), 0 0 24px var(--cor-erro); }
+        }
+
+        /* MEDIA QUERIES */
+        @media (min-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 2fr 1fr; /* Duas colunas em telas maiores */
+            }
+            .section.logs {
+                grid-column: 1 / -1; /* Logs ocupa a largura total */
+            }
+            .status-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr 1fr 1fr; /* Três colunas em telas grandes */
+            }
+            .section.logs {
+                grid-column: span 2; /* Logs ocupa 2 de 3 colunas */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>REDMUSIC</h1>
+    <h2>PAINEL DE SEGURANÇA GLOBAL</h2>
+
+    <div class="system-status" id="systemGlobalStatus">
+        <div class="status-indicator-light" id="globalStatusLight"></div>
+        <span>STATUS: OPERACIONAL</span>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="section status-overview">
+            <h3>Visão Geral do Sistema</h3>
+            <div class="status-grid">
+                <div class="status-item" id="serverStatus">
+                    <span class="label">Servidores Principais</span>
+                    <span class="value">ONLINE</span>
+                </div>
+                <div class="status-item" id="dbStatus">
+                    <span class="label">Banco de Dados</span>
+                    <span class="value">SINCRONIZADO</span>
+                </div>
+                <div class="status-item" id="networkStatus">
+                    <span class="label">Conexão de Rede</span>
+                    <span class="value">ESTÁVEL</span>
+                </div>
+                <div class="status-item" id="authStatus">
+                    <span class="label">Autenticação Usuário</span>
+                    <span class="value">ATIVO</span>
+                </div>
+                <div class="status-item alert" id="threatLevel">
+                    <span class="label">Nível de Ameaça</span>
+                    <span class="value">MODERADO</span>
+                </div>
+                <div class="status-item error" id="firewallStatus">
+                    <span class="label">Status Firewall</span>
+                    <span class="value">INCONSISTENTE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section alerts-actions">
+            <h3>Alertas e Ações</h3>
+            <div class="log-console" id="alertConsole">
+                <div class="log-entry info">[08:31:02] Sistema inicializado.</div>
+                <div class="log-entry warn">[08:31:15] Tentativa de acesso não autorizada (IP: 192.168.1.100). Bloqueado.</div>
+                <div class="log-entry error">[08:31:28] Falha na sincronização de dados do módulo #ALPHA.</div>
+                <div class="log-entry info">[08:31:40] Verificação de integridade do servidor #ECHO concluída. OK.</div>
+                <div class="log-entry warn">[08:32:05] Uso de CPU acima de 80% no servidor de streaming.</div>
+                <div class="log-entry critical">[08:32:10] ALERTA CRÍTICO: Vulnerabilidade detectada no Protocolo X-7.</div>
+            </div>
+            <div class="button-group">
+                <button class="action-button" onclick="simularAlerta()">Simular Alerta</button>
+                <button class="action-button" onclick="simularErro()">Simular Erro Crítico</button>
+                <button class="action-button" onclick="limparConsole()">Limpar Logs</button>
+            </div>
+        </div>
+
+        <div class="section logs">
+            <h3>Logs do Sistema</h3>
+            <div class="log-console" id="systemLogConsole">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const systemLogConsole = document.getElementById('systemLogConsole');
+        const alertConsole = document.getElementById('alertConsole');
+        const serverStatus = document.getElementById('serverStatus');
+        const dbStatus = document.getElementById('dbStatus');
+        const networkStatus = document.getElementById('networkStatus');
+        const authStatus = document.getElementById('authStatus');
+        const threatLevel = document.getElementById('threatLevel');
+        const firewallStatus = document.getElementById('firewallStatus');
+        const systemGlobalStatus = document.getElementById('systemGlobalStatus');
+        const globalStatusLight = document.getElementById('globalStatusLight');
+
+        let logCount = 0;
+
+        function addLog(consoleElement, message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.classList.add('log-entry', type);
+            const timestamp = new Date().toLocaleTimeString('pt-BR', { hour12: false });
+            entry.textContent = `[${timestamp}] ${message}`;
+            consoleElement.appendChild(entry);
+            consoleElement.scrollTop = consoleElement.scrollHeight; // Rolar para o final
+        }
+
+        function updateGlobalStatus() {
+            let hasError = false;
+            let hasAlert = false;
+
+            if (firewallStatus.classList.contains('error')) hasError = true;
+            if (threatLevel.classList.contains('alert')) hasAlert = true;
+
+            if (hasError) {
+                systemGlobalStatus.className = 'system-status error';
+                globalStatusLight.className = 'status-indicator-light error';
+                systemGlobalStatus.querySelector('span').textContent = 'STATUS: CRÍTICO';
+            } else if (hasAlert) {
+                systemGlobalStatus.className = 'system-status alert';
+                globalStatusLight.className = 'status-indicator-light alert';
+                systemGlobalStatus.querySelector('span').textContent = 'STATUS: ALERTA';
+            } else {
+                systemGlobalStatus.className = 'system-status';
+                globalStatusLight.className = 'status-indicator-light';
+                systemGlobalStatus.querySelector('span').textContent = 'STATUS: OPERACIONAL';
+            }
+        }
+
+        function simularAlerta() {
+            addLog(alertConsole, 'Alerta simulado: Detecção de anomalia leve.', 'warn');
+            threatLevel.classList.add('alert');
+            threatLevel.querySelector('.value').textContent = 'ELEVADO';
+            updateGlobalStatus();
+        }
+
+        function simularErro() {
+            addLog(alertConsole, 'Erro simulado: Falha crítica no subsistema de segurança!', 'error');
+            firewallStatus.classList.add('error');
+            firewallStatus.querySelector('.value').textContent = 'OFFLINE';
+            serverStatus.classList.add('error');
+            serverStatus.querySelector('.value').textContent = 'DEGRADADO';
+            updateGlobalStatus();
+        }
+
+        function limparConsole() {
+            while (systemLogConsole.firstChild) {
+                systemLogConsole.removeChild(systemLogConsole.firstChild);
+            }
+            while (alertConsole.firstChild) {
+                alertConsole.removeChild(alertConsole.firstChild);
+            }
+            // Resetar status
+            threatLevel.classList.remove('alert');
+            threatLevel.querySelector('.value').textContent = 'MODERADO';
+            firewallStatus.classList.remove('error');
+            firewallStatus.querySelector('.value').textContent = 'INCONSISTENTE';
+            serverStatus.classList.remove('error');
+            serverStatus.querySelector('.value').textContent = 'ONLINE';
+            addLog(systemLogConsole, 'Console de logs limpo.', 'info');
+            addLog(alertConsole, 'Console de alertas limpo.', 'info');
+            updateGlobalStatus();
+        }
+
+        // Simulação de logs automáticos
+        const logMessages = [
+            "Verificação de protocolo de rede X12-C concluída. Status: OK.",
+            "Monitoramento de tráfego de dados. Padrão normal.",
+            "Atualização de assinaturas de segurança V3.1. Instalada.",
+            "Sessão de usuário 'AdminRED' iniciada. Local: 203.0.113.45.",
+            "Teste de carga nos servidores de streaming. Resposta ideal.",
+            "Dados de telemetria enviados para o centro de operações.",
+            "Limpeza de cache do sistema iniciada. Concluída em 0.5s.",
+            "Monitoramento de integridade do disco #01. Saudável.",
+            "Pacotes de dados criptografados enviados.",
+            "Sistema em modo de baixa energia. Otimizado."
+        ];
+
+        function generateRandomLog() {
+            const randomMessage = logMessages[Math.floor(Math.random() * logMessages.length)];
+            const randomType = Math.random() < 0.1 ? 'warn' : (Math.random() < 0.05 ? 'error' : 'info');
+            addLog(systemLogConsole, randomMessage, randomType);
+        }
+
+        setInterval(generateRandomLog, 3000); // Gera um log a cada 3 segundos
+
+        // Inicializa o status global
+        updateGlobalStatus();
+    </script>
+
+</body>
+</html>
