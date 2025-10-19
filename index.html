@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REDMUSIC - Painel de Segurança (Futurista Vermelho)</title>
+    <title>REDMUSIC - Painel De Segurança</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         /* Variáveis de Cores e Fontes */
@@ -437,18 +437,18 @@
 
     <div class="dashboard-container">
         <div class="section status-overview">
-            <h3>Visão Geral do Sistema</h3>
+            <h3>Visão Geral Do Sistema</h3>
             <div class="status-grid">
                 <div class="status-item" id="serverStatus">
                     <span class="label">Servidores Principais</span>
                     <span class="value">ONLINE</span>
                 </div>
                 <div class="status-item" id="dbStatus">
-                    <span class="label">Banco de Dados</span>
+                    <span class="label">Banco De Dados</span>
                     <span class="value">SINCRONIZADO</span>
                 </div>
                 <div class="status-item" id="networkStatus">
-                    <span class="label">Conexão de Rede</span>
+                    <span class="label">Conexão De Rede</span>
                     <span class="value">ESTÁVEL</span>
                 </div>
                 <div class="status-item" id="authStatus">
@@ -456,7 +456,7 @@
                     <span class="value">ATIVO</span>
                 </div>
                 <div class="status-item" id="threatLevel">
-                    <span class="label">Nível de Ameaça</span>
+                    <span class="label">Nível De Ameaça</span>
                     <span class="value">BAIXO</span>
                 </div>
                 <div class="status-item" id="firewallStatus">
@@ -467,21 +467,21 @@
         </div>
 
         <div class="section alerts-actions">
-            <h3>Alertas e Ações</h3>
+            <h3>Alertas E Ações</h3>
             <div class="log-console" id="alertConsole">
                 <div class="log-entry info">[08:31:02] Sistema de segurança inicializado.</div>
                 <div class="log-entry warn">[08:31:15] Tentativa de varredura de porta detectada (IP: 10.1.0.5). Bloqueado.</div>
                 <div class="log-entry critical">[08:32:10] ALERTA CRÍTICO: Anomalia no heartbeat do nó #KAPPA-01. Investigando.</div>
             </div>
             <div class="button-group">
-                <button class="action-button" onclick="simularAlerta()">Simular Ameaça</button>
-                <button class="action-button" onclick="simularErro()">Simular Falha Crítica</button>
-                <button class="action-button" onclick="limparConsole()">Limpar Logs</button>
+                <button class="action-button" onclick="simularAlerta()">Reiniciar</button>
+                <button class="action-button" onclick="simularErro()">Usuários</button>
+                <button class="action-button" onclick="limparConsole()">Banidos</button>
             </div>
         </div>
 
         <div class="section logs">
-            <h3>Logs de Eventos</h3>
+            <h3>Logs De Eventos</h3>
             <div class="log-console" id="systemLogConsole">
                 </div>
         </div>
@@ -538,12 +538,12 @@
 
         function simularAlerta() {
             if (!isThreatElevated) {
-                addLog(alertConsole, 'Alerta simulado: Tentativa de intrusão detectada. Nível de ameaça elevado.', 'warn');
+                addLog(alertConsole, 'Tentativa De Intrusão Detectada. Nível De Ameaça Elevado.', 'warn');
                 threatLevel.classList.add('alert');
                 threatLevel.querySelector('.value').textContent = 'ELEVADO';
                 isThreatElevated = true;
             } else {
-                addLog(alertConsole, 'Alerta simulado: Pacotes maliciosos na rede. Bloqueando novas conexões.', 'error');
+                addLog(alertConsole, 'Alerta Simulado: Pacotes Maliciosos Na Rede. Bloqueando Novas Conexões.', 'error');
                 networkStatus.classList.add('alert');
                 networkStatus.querySelector('.value').textContent = 'DEGRADADO';
             }
@@ -552,14 +552,14 @@
 
         function simularErro() {
             if (!isCriticalFailure) {
-                addLog(alertConsole, 'Erro simulado: Falha catastrófica no subsistema de segurança principal!', 'critical');
+                addLog(alertConsole, 'Falha Catastrófica No Subsistema De Segurança Principal!', 'critical');
                 firewallStatus.classList.add('error');
                 firewallStatus.querySelector('.value').textContent = 'OFFLINE';
                 serverStatus.classList.add('error');
                 serverStatus.querySelector('.value').textContent = 'CRÍTICO';
                 isCriticalFailure = true;
             } else {
-                addLog(alertConsole, 'Erro simulado: Perda de conexão com o banco de dados de logs. Dados em risco.', 'critical');
+                addLog(alertConsole, 'Perda De Conexão Com O Banco De Dados De Logs. Dados Em Risco.', 'critical');
                 dbStatus.classList.add('error');
                 dbStatus.querySelector('.value').textContent = 'DESCONECTADO';
             }
@@ -588,8 +588,8 @@
             isThreatElevated = false;
             isCriticalFailure = false;
 
-            addLog(systemLogConsole, 'Console de logs do sistema limpo.', 'info');
-            addLog(alertConsole, 'Console de alertas limpo. Sistema reinicializado.', 'info');
+            addLog(systemLogConsole, 'Console De Logs Do Sistema Limpo.', 'info');
+            addLog(alertConsole, 'Console De Alertas Limpo. Sistema Reinicializado.', 'info');
             updateGlobalStatus();
         }
 
